@@ -91,8 +91,8 @@ class HomeScreen extends Component {
         super();
 
         this.state = {
-            attack: 3,
-            defense: 2
+            attack: 2,
+            defense: 1
         }
 
         this.onIncreaseClick = this.onIncreaseClick.bind(this);
