@@ -3,9 +3,9 @@
   "name": "Arcadia Dice",
   "icons": [
     {
-      "src": "attack-crit192.png",
+      "src": "attack-crit192.ico",
       "sizes": "512x512 192x192",
-      "type": "image/png"
+      "type": "image/x-ico"
     }
   ],
   "start_url": ".",
