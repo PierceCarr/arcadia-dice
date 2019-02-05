@@ -9,6 +9,10 @@
   "dependencies": {
     "@blueprintjs/core": "^3.12.0",
     "@blueprintjs/icons": "^3.5.1",
+    "@material-ui/core": "^3.9.1",
+    "@material-ui/icons": "^3.0.2",
+    "firebase-tools": "^6.3.0",
+    "prop-types": "^15.6.2",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-scripts": "2.1.3",

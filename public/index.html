@@ -25,6 +25,19 @@
     <title>Arcadia Dice</title>
   </head>
   <body>
+    <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase.js"></script>
+      <script>
+        // Initialize Firebase
+        var config = {
+          apiKey: "AIzaSyAaehNyg0v3S6QyCUbkzHgDFRGLNHF0jiA",
+          authDomain: "arcadia-dice.firebaseapp.com",
+          databaseURL: "https://arcadia-dice.firebaseio.com",
+          projectId: "arcadia-dice",
+          storageBucket: "arcadia-dice.appspot.com",
+          messagingSenderId: "586110547098"
+        };
+        firebase.initializeApp(config);
+      </script>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <!--

@@ -1,6 +1,17 @@
 import React, {Component} from 'react';
+
 import {Icon} from "@blueprintjs/core";
 import styled from 'styled-components';
+
+import ArcadiaTally from './ArcadiaTally.js';
+import RollScreen from './RollScreen.js';
+
+import attackCritical from './images/attack-critical.png';
+import attackMelee from './images/attack-melee.png';
+import attackRanged from './images/attack-ranged.png'; 
+import defenseCritical from './images/defense-critical.png';
+import defenseBlank from './images/defense-blank.png';
+import defenseBlock from  './images/defense-block.png';
 
 const CounterWrapper = styled.div`
     display: flex;
@@ -39,6 +50,8 @@ const Home = styled.div`
     min-width: 200px;
     // background-color: pink;
 
+    touch-action: none;
+
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
      -khtml-user-select: none; /* Konqueror HTML */
@@ -46,8 +59,6 @@ const Home = styled.div`
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
-
-
 `
 
 const QuickNumber = styled.strong`
@@ -86,16 +97,47 @@ const Title = styled.h1`
     }
 `
 
+const DICE_SIDE_LENGTH = 64;
+const ATTACK_DICE = [
+    ["critical", attackCritical],
+    ["melee", attackMelee],
+    ["melee", attackMelee],
+    ["melee", attackMelee],
+    ["ranged", attackRanged],
+    ["ranged", attackRanged],
+];
+const DEFENSE_DICE = [
+    ["critical", defenseCritical],
+    ["block", defenseBlock],
+    ["blank", defenseBlank],
+    ["blank", defenseBlank],
+    ["blank", defenseBlank],
+    ["blank", defenseBlank],
+];
+
 class HomeScreen extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             attack: 2,
-            defense: 1
+            defense: 1,
+            diceTypeIsAttack: false,
+            isDisplayingRollScreen: false,
         }
 
+        this.onDecreaseClick = this.onDecreaseClick.bind(this);
+        this.onHomeClick = this.onHomeClick.bind(this);
         this.onIncreaseClick = this.onIncreaseClick.bind(this);
+
+    }
+
+    triggerRoll(diceTypeIsAttack) {
+        this.setState({
+            diceTypeIsAttack: diceTypeIsAttack,
+            isDisplayingRollScreen: true
+        });
+        
     }
 
     onDecreaseClick(property) {
@@ -104,6 +146,12 @@ class HomeScreen extends Component {
                 [property]: prevState[property] - 1
             }));
         }
+    }
+
+    onHomeClick() {
+        this.setState({
+            isDisplayingRollScreen: false
+        });
     }
 
     onIncreaseClick(property) {
@@ -115,12 +163,18 @@ class HomeScreen extends Component {
 
     render() {
         const ICON_SIZE_PIXEL_GRID = 120;
+        const DICE_TYPE_IS_ATTACK = true;
+        const DICE_TYPE_IS_NOT_ATTACK = false;
 
         const DiceCounters =
             <CounterWrapper>
 
                 <DiceCounter>
-                    <RollButton>Attack</RollButton>
+                    <RollButton
+                        onClick={() => this.triggerRoll(DICE_TYPE_IS_ATTACK)}
+                    >
+                        Attack
+                    </RollButton>
                     <Icon 
                         icon="caret-up" 
                         iconSize={ICON_SIZE_PIXEL_GRID} 
@@ -133,7 +187,11 @@ class HomeScreen extends Component {
                 </DiceCounter>
 
                 <DiceCounter>
-                    <RollButton>Defense</RollButton>
+                    <RollButton
+                         onClick={() => this.triggerRoll(DICE_TYPE_IS_NOT_ATTACK)}
+                    >
+                        Defense
+                    </RollButton>
                     <Icon 
                         icon="caret-up" 
                         iconSize={ICON_SIZE_PIXEL_GRID} 
@@ -147,13 +205,38 @@ class HomeScreen extends Component {
 
             </CounterWrapper>;
 
-        return (
-            <Home>
-                <Title>Arcadia Dice</Title>
-                <i> Quick Roll: </i>
-                {DiceCounters}
-            </Home>
-        );
+            const numberOfDice =
+                this.state.diceTypeIsAttack === true ? 
+                this.state.attack : this.state.defense;
+
+            const dieToRoll = 
+                this.state.diceTypeIsAttack === true ?
+                ATTACK_DICE : DEFENSE_DICE;
+
+            let display = null;
+            if(this.state.isDisplayingRollScreen) {
+                display = 
+                <RollScreen
+                    numberOfDice={numberOfDice}
+                    diceInteractionComponents={[ArcadiaTally]}
+                    dieDefaultBorderColor="grey"
+                    dieSelectBorderColor="green"
+                    dieSideLength={DICE_SIDE_LENGTH}
+                    faceArray={dieToRoll}
+                    onDecreaseClick={this.onDecreaseClick}
+                    onHomeClick={this.onHomeClick}
+                    onIncreaseClick={this.onIncreaseClick}
+                />
+            } else {
+                display =  
+                <Home>
+                    <Title>Arcadia Dice</Title>
+                    <i> Quick Roll: </i>
+                    {DiceCounters}
+                </Home>
+            }
+
+        return display;
     }
 }
 
