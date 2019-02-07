@@ -4,6 +4,7 @@ import {Icon} from "@blueprintjs/core";
 import styled from 'styled-components';
 
 import ArcadiaTally from './ArcadiaTally.js';
+import CritAndRerollButtons from './CritAndRerollButtons.js';
 import RollScreen from './RollScreen.js';
 
 import attackCritical from './images/attack-critical.png';
@@ -218,7 +219,11 @@ class HomeScreen extends Component {
                 display = 
                 <RollScreen
                     numberOfDice={numberOfDice}
-                    diceInteractionComponents={[ArcadiaTally]}
+                    diceInteractionComponents=
+                        {[
+                            ArcadiaTally, 
+                            CritAndRerollButtons
+                        ]}
                     dieDefaultBorderColor="grey"
                     dieSelectBorderColor="green"
                     dieSideLength={DICE_SIDE_LENGTH}

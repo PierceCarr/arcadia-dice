@@ -2,11 +2,21 @@ import React, {Component} from 'react';
 import Fab from '@material-ui/core/Fab';
 import Home from '@material-ui/icons/Home';
 import PropTypes from 'prop-types';
+// import styled from 'styled-components';
 
 import DiceBox from './DiceBox.js';
 import Die from './Die.js';
 
-// import styled from 'styled-components';
+// const DiceInteractionComponentArea = styled.div`
+//     display: flex;
+//     felx-direction: column;
+//     background-color: blue;
+// `
+
+// const Screen = styled.div`
+//     display: flex;
+//     felx-direction: column;
+// `
 
 class RollScreen extends Component {
     constructor(props) {
@@ -26,6 +36,30 @@ class RollScreen extends Component {
         this.addDiceToPool = this.addDiceToPool.bind(this);
         this.onDieClick = this.onDieClick.bind(this);
         this.removeDiceFromPool = this.removeDiceFromPool.bind(this);
+        this.replaceDiceInPool = this.replaceDiceInPool.bind(this);
+        this.setSelectedDiceArray = this.setSelectedDiceArray.bind(this);
+    }
+
+    
+
+    addDiceToPool(numberOfDice) {
+        const newDice = [];
+
+        for(let i = 0; i < numberOfDice; i++) {
+            const newDie = this.roll(this.props.faceArray);
+            newDice.push(newDie);
+        }
+
+        const updatedArray = this.state.displayedDice;
+        newDice.forEach(function(die) {
+            updatedArray.push(die);
+        });
+
+        this.setState({
+            displayedDice: updatedArray
+        });
+
+        return newDice;
     }
 
     makeDice() {
@@ -53,14 +87,7 @@ class RollScreen extends Component {
         return dieArray;
     }
 
-    addDiceToPool(dieArray) {
-        const updatedArray = this.state.displayedDice;
-        dieArray.forEach(function(die) {
-            updatedArray.push(die);
-        });
-
-        return updatedArray;
-    }
+    
 
     onDieClick(location) {//This works, but I should use hash mapping
         if(this.state.selectedDice.includes(location)) {
@@ -114,6 +141,35 @@ class RollScreen extends Component {
 
     }
 
+    //could easily add specific dice in as a second param if 
+    //future app requires it
+    replaceDiceInPool(diceLocationArray) {
+        const newDice = [];
+        for(let i = 0; i < diceLocationArray.length; i++) {
+            const newDie = this.roll(this.props.faceArray);
+            newDice.push(newDie);
+        }
+
+        const newDisplayedDiceArray = this.state.displayedDice;
+        let diceLocationIndex = 0;
+        for(let i = 0; i < newDisplayedDiceArray.length; i++) {
+            if(diceLocationArray.includes(i)){
+                newDisplayedDiceArray[i] = newDice[diceLocationIndex];
+                diceLocationIndex++;
+            }
+        }
+
+        this.setState({
+            displayedDice: newDisplayedDiceArray
+        })
+    }
+
+    setSelectedDiceArray(newArray) {
+        this.setState({
+            selectedDice: newArray
+        })
+    }
+
     render() {
 
         const homeButton = 
@@ -141,7 +197,9 @@ class RollScreen extends Component {
                             faceArray={this.props.faceArray}
                             key={componentKey}
                             removeDiceFromPool={this.removeDiceFromPool}
-
+                            replaceDiceInPool={this.replaceDiceInPool}
+                            selectedDiceArray={this.state.selectedDice}
+                            setSelectedDiceArray={this.setSelectedDiceArray}
                         />
                 }, this)
                 }
