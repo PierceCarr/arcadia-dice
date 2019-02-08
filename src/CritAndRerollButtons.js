@@ -2,6 +2,17 @@ import React, {Component} from 'react';
 
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
+const CARbutton = styled(Button)`
+    border: 1px solid black !important;
+    margin: 2px;
+    width: 352px;
+
+    @media (max-width: 360px) {
+        width: 96vw
+    }
+`
 
 class CritAndRerollButtons extends Component {
     constructor(props) {
@@ -14,7 +25,6 @@ class CritAndRerollButtons extends Component {
 
         this.state = {
             critsToRoll: initialCrits,
-            // critsRolledUpToIndex: -1
         };
     }
 
@@ -37,7 +47,6 @@ class CritAndRerollButtons extends Component {
     }
 
     async rollCrits() {
-        // const newCritsRolledUpToIndex = this.props.dicePool.length;
         const newDice = await this.props.addDiceToPool(this.state.critsToRoll);
         
         let numberOfNewCrits = 0;
@@ -61,15 +70,24 @@ class CritAndRerollButtons extends Component {
             `Roll your ${this.state.critsToRoll} bonus critical ${critPlurality}` :
             "No critical dice to roll.";
 
+        // const buttonBorder = {
+        //     border: '1px solid black',
+        //     margin: '2px',
+        //     width: 352px;
+
+        //     @media (max-width: 360px) {
+        //         width: 96vw
+        //     }
+        // }
 
         const rollCritsButton =
-            <Button
+            <CARbutton
                 color='primary'
                 disabled={thereAreUnrolledCrits === false}
                 onClick={() => this.rollCrits()}
             >
                 {rollCritsButtonText}
-            </Button>;
+            </CARbutton>;
 
         const numberOfSelectedDice = this.props.selectedDiceArray.length;
         const rerollPlurality = 
@@ -79,15 +97,15 @@ class CritAndRerollButtons extends Component {
         const rerollButtonText = 
             thereAreUnrolledCrits ?
             `Roll crits before rerolling dice` :
-            `Reroll ${numberOfSelectedDice} ${rerollPlurality}`;
+            `Reroll ${numberOfSelectedDice} selected ${rerollPlurality}`;
 
         const rerollButton = 
-            <Button
+            <CARbutton
                 disabled={thereAreUnrolledCrits}
                 onClick={() => this.rerollSelectedDice()}
             >
                 {rerollButtonText}
-            </Button>;
+            </CARbutton>;
 
         const displayFlex = {
             display: 'flex',

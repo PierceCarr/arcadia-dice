@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import ArcadiaTally from './ArcadiaTally.js';
 import CritAndRerollButtons from './CritAndRerollButtons.js';
 import RollScreen from './RollScreen.js';
+import SelfRollingButton from './SelfRollingButton.js';
 
 import attackCritical from './images/attack-critical.png';
 import attackMelee from './images/attack-melee.png';
@@ -13,6 +14,8 @@ import attackRanged from './images/attack-ranged.png';
 import defenseCritical from './images/defense-critical.png';
 import defenseBlank from './images/defense-blank.png';
 import defenseBlock from  './images/defense-block.png';
+
+const DICE_SIDE_LENGTH = 64;
 
 const CounterWrapper = styled.div`
     display: flex;
@@ -61,6 +64,11 @@ const Home = styled.div`
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 `
+// const diceBorderWidth = DICE_SIDE_LENGTH * (1/16);
+// const ImageShiftingButton = styled.img`
+//     border: ${diceBorderWidth}px solid grey;
+//     border-radius: 20%
+// `
 
 const QuickNumber = styled.strong`
     font-size: 10vh;
@@ -72,24 +80,25 @@ const QuickNumber = styled.strong`
     }
 `
 
-const RollButton = styled.button`
-    border-radius: 15%;
-    border: 10px solid;
-    margin: 0 1em;
-    padding: 0.25em 1em;
-    width: 100%;
-    min-width: 90px;
-    // height: 25%;
-    // max-height: 120px;
-    // min-height: 120px;
-    // height: width;
-    background-color: white;
+// const RollButton = styled.button`
+//     border-radius: 15%;
+//     border: 10px solid black;
+//     margin: 0 1em;
+//     padding: 0.25em 1em;
+//     width: 100%;
+//     min-width: 90px;
+//     // height: 25%;
+//     // max-height: 120px;
+//     // min-height: 120px;
+//     // height: width;
+//     background-color: white;
+//     color: black;
 
-    font-size: 7vw;
-    @media (min-width: 820px) {
-        font-size: 57px;
-    }
-`
+//     font-size: 7vw;
+//     @media (min-width: 820px) {
+//         font-size: 57px;
+//     }
+// `
 
 const Title = styled.h1`
     font-size: 10vw;
@@ -98,7 +107,7 @@ const Title = styled.h1`
     }
 `
 
-const DICE_SIDE_LENGTH = 64;
+
 const ATTACK_DICE = [
     ["critical", attackCritical],
     ["melee", attackMelee],
@@ -121,8 +130,8 @@ class HomeScreen extends Component {
         super(props);
 
         this.state = {
-            attack: 2,
-            defense: 1,
+            attack: 5,
+            defense: 5,
             diceTypeIsAttack: false,
             isDisplayingRollScreen: false,
         }
@@ -130,7 +139,13 @@ class HomeScreen extends Component {
         this.onDecreaseClick = this.onDecreaseClick.bind(this);
         this.onHomeClick = this.onHomeClick.bind(this);
         this.onIncreaseClick = this.onIncreaseClick.bind(this);
+        this.triggerAttackRoll = this.triggerAttackRoll.bind(this);
+        this.triggerDefenseRoll = this.triggerDefenseRoll.bind(this);
 
+    }
+
+    componentWillUnmount() {
+        clearTimeout();
     }
 
     triggerRoll(diceTypeIsAttack) {
@@ -139,6 +154,20 @@ class HomeScreen extends Component {
             isDisplayingRollScreen: true
         });
         
+    }
+
+    triggerAttackRoll() {
+        this.setState({
+            diceTypeIsAttack: true,
+            isDisplayingRollScreen: true
+        });
+    }
+
+    triggerDefenseRoll() {
+        this.setState({
+            diceTypeIsAttack: false,
+            isDisplayingRollScreen: true
+        });
     }
 
     onDecreaseClick(property) {
@@ -164,18 +193,36 @@ class HomeScreen extends Component {
 
     render() {
         const ICON_SIZE_PIXEL_GRID = 120;
-        const DICE_TYPE_IS_ATTACK = true;
-        const DICE_TYPE_IS_NOT_ATTACK = false;
+        // const DICE_TYPE_IS_ATTACK = true;
+        // const DICE_TYPE_IS_NOT_ATTACK = false;
+
+        const attackButtonImageArray =
+            [attackCritical, attackMelee, attackRanged];
+        const attackDieButton =
+            <SelfRollingButton 
+                assignedSideLength={DICE_SIDE_LENGTH}
+                borderColor='grey'
+                imageArray={attackButtonImageArray}
+                handleClick={this.triggerAttackRoll}
+                text={"Roll"}
+            />;
+
+        const defenseButtonImageArray =
+            [defenseCritical, defenseBlock, defenseBlank];
+        const defenseDieButton =
+            <SelfRollingButton 
+                assignedSideLength={DICE_SIDE_LENGTH}
+                borderColor='grey'
+                imageArray={defenseButtonImageArray}
+                handleClick={this.triggerDefenseRoll}
+                text={"Roll"}
+            />
 
         const DiceCounters =
             <CounterWrapper>
 
                 <DiceCounter>
-                    <RollButton
-                        onClick={() => this.triggerRoll(DICE_TYPE_IS_ATTACK)}
-                    >
-                        Attack
-                    </RollButton>
+                     {attackDieButton}
                     <Icon 
                         icon="caret-up" 
                         iconSize={ICON_SIZE_PIXEL_GRID} 
@@ -188,11 +235,7 @@ class HomeScreen extends Component {
                 </DiceCounter>
 
                 <DiceCounter>
-                    <RollButton
-                         onClick={() => this.triggerRoll(DICE_TYPE_IS_NOT_ATTACK)}
-                    >
-                        Defense
-                    </RollButton>
+                    {defenseDieButton}
                     <Icon 
                         icon="caret-up" 
                         iconSize={ICON_SIZE_PIXEL_GRID} 

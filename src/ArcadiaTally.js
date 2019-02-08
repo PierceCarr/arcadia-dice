@@ -8,6 +8,11 @@ const TallyContainer = styled.div`
     flex-direction: column;
     border: 4px solid black;
     margin: 4px;
+    width: 352px;
+
+    @media (max-width: 360px) {
+        width: 96vw
+    }
 `
 
 class ArcadiaTally extends Component {

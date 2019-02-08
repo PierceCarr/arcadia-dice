@@ -40,8 +40,6 @@ class RollScreen extends Component {
         this.setSelectedDiceArray = this.setSelectedDiceArray.bind(this);
     }
 
-    
-
     addDiceToPool(numberOfDice) {
         const newDice = [];
 
@@ -86,8 +84,6 @@ class RollScreen extends Component {
 
         return dieArray;
     }
-
-    
 
     onDieClick(location) {//This works, but I should use hash mapping
         if(this.state.selectedDice.includes(location)) {
@@ -172,9 +168,18 @@ class RollScreen extends Component {
 
     render() {
 
+        const homeButtonFixer = {
+            position: 'fixed',
+            bottom: '0',
+            left: '50%',
+            marginLeft: '-30.25px' //half the button's width
+
+        }
+
         const homeButton = 
             <Fab 
                 onClick={this.props.onHomeClick}
+                style={homeButtonFixer}
                 variant='round'
             >
                 <Home/>
@@ -182,12 +187,19 @@ class RollScreen extends Component {
 
         const currentRoll = this.makeDice();
 
+        const interactionCentering = {
+            alignItems: 'center',
+            display: 'flex',
+            flexDirection: 'column'
+            
+        }
+
         let diceInteractionComponents = '';
         if(this.props.diceInteractionComponents !== undefined){
             let componentKey = 0;
                 
             diceInteractionComponents = 
-            <div>
+            <div style={interactionCentering}>
                 {
                     this.props.diceInteractionComponents.map(function(Component) {
                         componentKey++;
@@ -205,11 +217,15 @@ class RollScreen extends Component {
                 }
             </div>;
         }
+
+        const homeButtonSpaceHeight = {height: '56px'}
+        const homeButtonSpace =<div style={homeButtonSpaceHeight}/>
         
         const display = 
         <div>
             <DiceBox diceToDisplay={currentRoll}/>
             {diceInteractionComponents}
+            {homeButtonSpace}
             {homeButton}
         </div>
 
