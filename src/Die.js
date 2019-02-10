@@ -21,10 +21,15 @@ class Die extends Component {
             width: ${IMAGE_SIDE_LENGTH}px;
         `
 
+        const onClick = 
+            this.props.onClick !== null ?
+            this.props.onClick :
+            function(){};
+
         const result = 
         <StyledDie 
             src={this.props.faceImageURL}
-            onClick={() => this.props.onDieClick(this.props.location)}
+            onClick={() => onClick()}
         />;
 
         return(result);
@@ -34,9 +39,8 @@ class Die extends Component {
 Die.propTypes = {
     assignedSideLength: PropTypes.number,
     borderColor: PropTypes.string,
-    location: PropTypes.number,
-    onDieClick: PropTypes.func,
     faceImageURL: PropTypes.string,
+    onClick: PropTypes.func,
 }
 
 export default Die;

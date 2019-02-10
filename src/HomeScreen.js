@@ -144,8 +144,8 @@ class HomeScreen extends Component {
 
     }
 
-    componentWillUnmount() {
-        clearTimeout();
+    componentDidMount() {
+        console.log('Not using ./build');
     }
 
     triggerRoll(diceTypeIsAttack) {
@@ -193,8 +193,6 @@ class HomeScreen extends Component {
 
     render() {
         const ICON_SIZE_PIXEL_GRID = 120;
-        // const DICE_TYPE_IS_ATTACK = true;
-        // const DICE_TYPE_IS_NOT_ATTACK = false;
 
         const attackButtonImageArray =
             [attackCritical, attackMelee, attackRanged];
@@ -279,7 +277,7 @@ class HomeScreen extends Component {
                 display =  
                 <Home>
                     <Title>Arcadia Dice</Title>
-                    <i> Quick Roll: </i>
+
                     {DiceCounters}
                 </Home>
             }

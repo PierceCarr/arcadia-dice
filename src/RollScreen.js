@@ -75,8 +75,7 @@ class RollScreen extends Component {
                     assignedSideLength={this.props.dieSideLength}
                     borderColor={borderColor}
                     faceImageURL={valueImagePair[FACE_URL_SLOT]}
-                    location={i}
-                    onDieClick={this.onDieClick}
+                    onClick={() => this.onDieClick(i)}
                     key={i}
                 />
             dieArray.push(die);
