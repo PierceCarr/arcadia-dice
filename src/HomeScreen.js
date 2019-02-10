@@ -143,11 +143,7 @@ class HomeScreen extends Component {
         this.triggerDefenseRoll = this.triggerDefenseRoll.bind(this);
 
     }
-
-    componentDidMount() {
-        console.log('Not using ./build');
-    }
-
+    
     triggerRoll(diceTypeIsAttack) {
         this.setState({
             diceTypeIsAttack: diceTypeIsAttack,
