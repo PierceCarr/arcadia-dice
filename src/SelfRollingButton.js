@@ -39,6 +39,8 @@ class SelfRollingButton extends Component {
             if(i !== initialImageIndex) unusedImageIndexes.push(i);
         }
 
+
+
         this.state = {
             currentImage: initialImageIndex,
             unusedImageIndexes: unusedImageIndexes
@@ -59,6 +61,16 @@ class SelfRollingButton extends Component {
     componentWillUnmount() {
         clearTimeout(this.intervalID);
     }
+
+    // createFaceButtons() {
+    //     const arrayOfFaceButtons = [];
+
+    //     this.props.imageArray.forEach((image) => {
+            
+    //     })
+    // }
+
+    handleClick = () => {this.props.handleClick()}
 
     async setNewRandomImage() {
         const rand = Math.random();
@@ -93,7 +105,7 @@ class SelfRollingButton extends Component {
         const display = 
         <div 
             style={containerPosition} 
-            onClick={() => this.props.handleClick()}
+            onClick={this.handleClick}
         >
             
             <Die 

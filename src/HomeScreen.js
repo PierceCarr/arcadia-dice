@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 
+import Button from '@material-ui/core/Button';
 import {Icon} from "@blueprintjs/core";
+import PropTypes from 'prop-types';
+import Settings from '@material-ui/icons/Settings';
 import styled from 'styled-components';
 
 import ArcadiaTally from './ArcadiaTally.js';
@@ -14,8 +17,6 @@ import attackRanged from './images/attack-ranged.png';
 import defenseCritical from './images/defense-critical.png';
 import defenseBlank from './images/defense-blank.png';
 import defenseBlock from  './images/defense-block.png';
-
-const DICE_SIDE_LENGTH = 64;
 
 const CounterWrapper = styled.div`
     display: flex;
@@ -64,11 +65,6 @@ const Home = styled.div`
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 `
-// const diceBorderWidth = DICE_SIDE_LENGTH * (1/16);
-// const ImageShiftingButton = styled.img`
-//     border: ${diceBorderWidth}px solid grey;
-//     border-radius: 20%
-// `
 
 const QuickNumber = styled.strong`
     font-size: 10vh;
@@ -79,26 +75,6 @@ const QuickNumber = styled.strong`
         font-size: 60px;
     }
 `
-
-// const RollButton = styled.button`
-//     border-radius: 15%;
-//     border: 10px solid black;
-//     margin: 0 1em;
-//     padding: 0.25em 1em;
-//     width: 100%;
-//     min-width: 90px;
-//     // height: 25%;
-//     // max-height: 120px;
-//     // min-height: 120px;
-//     // height: width;
-//     background-color: white;
-//     color: black;
-
-//     font-size: 7vw;
-//     @media (min-width: 820px) {
-//         font-size: 57px;
-//     }
-// `
 
 const Title = styled.h1`
     font-size: 10vw;
@@ -143,7 +119,7 @@ class HomeScreen extends Component {
         this.triggerDefenseRoll = this.triggerDefenseRoll.bind(this);
 
     }
-    
+
     triggerRoll(diceTypeIsAttack) {
         this.setState({
             diceTypeIsAttack: diceTypeIsAttack,
@@ -166,7 +142,7 @@ class HomeScreen extends Component {
         });
     }
 
-    onDecreaseClick(property) {
+    onDecreaseClick(property){
         if(this.state[property] - 1 > 0) {
             this.setState((prevState, props) => ({
                 [property]: prevState[property] - 1
@@ -180,34 +156,37 @@ class HomeScreen extends Component {
         });
     }
 
-    onIncreaseClick(property) {
+    onIncreaseClick(property){
         this.setState((prevState, props) => ({
             [property]: prevState[property] + 1
         }));
     }
 
+    onOptionsClick = () => {this.props.displayOptions()}
+    
+    increaseAttack = () => {this.onIncreaseClick('attack')};
+    decreaseAttack = () => {this.onDecreaseClick('attack')};
+
+    increaseDefense = () => {this.onIncreaseClick('defense')};
+    decreaseDefense = () => {this.onDecreaseClick('defense')};
 
     render() {
         const ICON_SIZE_PIXEL_GRID = 120;
 
-        const attackButtonImageArray =
-            [attackCritical, attackMelee, attackRanged];
         const attackDieButton =
             <SelfRollingButton 
-                assignedSideLength={DICE_SIDE_LENGTH}
+                assignedSideLength={this.props.dieSideLengthPx}
                 borderColor='grey'
-                imageArray={attackButtonImageArray}
+                imageArray={[attackCritical, attackMelee, attackRanged]}
                 handleClick={this.triggerAttackRoll}
                 text={"Roll"}
             />;
 
-        const defenseButtonImageArray =
-            [defenseCritical, defenseBlock, defenseBlank];
         const defenseDieButton =
             <SelfRollingButton 
-                assignedSideLength={DICE_SIDE_LENGTH}
+                assignedSideLength={this.props.dieSideLengthPx}
                 borderColor='grey'
-                imageArray={defenseButtonImageArray}
+                imageArray={[defenseCritical, defenseBlock, defenseBlank]}
                 handleClick={this.triggerDefenseRoll}
                 text={"Roll"}
             />
@@ -220,12 +199,12 @@ class HomeScreen extends Component {
                     <Icon 
                         icon="caret-up" 
                         iconSize={ICON_SIZE_PIXEL_GRID} 
-                        onClick={() => this.onIncreaseClick("attack")} />
+                        onClick={this.increaseAttack} />
                     <QuickNumber>{this.state.attack}</QuickNumber>
                     <Icon 
                         icon="caret-down" 
                         iconSize={ICON_SIZE_PIXEL_GRID} 
-                        onClick={() => this.onDecreaseClick("attack")} />
+                        onClick={this.decreaseAttack} />
                 </DiceCounter>
 
                 <DiceCounter>
@@ -233,15 +212,20 @@ class HomeScreen extends Component {
                     <Icon 
                         icon="caret-up" 
                         iconSize={ICON_SIZE_PIXEL_GRID} 
-                        onClick={() => this.onIncreaseClick("defense")} />
+                        onClick={this.increaseDefense} />
                     <QuickNumber>{this.state.defense}</QuickNumber>
                     <Icon 
                         icon="caret-down"
                         iconSize={ICON_SIZE_PIXEL_GRID} 
-                        onClick={() => this.onDecreaseClick("defense")} />
+                        onClick={this.decreaseDefense} />
                 </DiceCounter>
 
             </CounterWrapper>;
+
+            const displayOptionsButton =
+                <Button onClick={this.onOptionsClick}>
+                    <Settings/> Options
+                </Button>;
 
             const numberOfDice =
                 this.state.diceTypeIsAttack === true ? 
@@ -263,7 +247,7 @@ class HomeScreen extends Component {
                         ]}
                     dieDefaultBorderColor="grey"
                     dieSelectBorderColor="green"
-                    dieSideLength={DICE_SIDE_LENGTH}
+                    dieSideLength={this.props.dieSideLengthPx}
                     faceArray={dieToRoll}
                     onDecreaseClick={this.onDecreaseClick}
                     onHomeClick={this.onHomeClick}
@@ -273,13 +257,18 @@ class HomeScreen extends Component {
                 display =  
                 <Home>
                     <Title>Arcadia Dice</Title>
-
                     {DiceCounters}
+                    {displayOptionsButton}
                 </Home>
             }
 
         return display;
     }
+}
+
+HomeScreen.propTypes = {
+    dieSideLengthPx: PropTypes.number,
+    displayOptions: PropTypes.func
 }
 
 export default HomeScreen;

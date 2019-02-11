@@ -2,21 +2,9 @@ import React, {Component} from 'react';
 import Fab from '@material-ui/core/Fab';
 import Home from '@material-ui/icons/Home';
 import PropTypes from 'prop-types';
-// import styled from 'styled-components';
 
 import DiceBox from './DiceBox.js';
 import Die from './Die.js';
-
-// const DiceInteractionComponentArea = styled.div`
-//     display: flex;
-//     felx-direction: column;
-//     background-color: blue;
-// `
-
-// const Screen = styled.div`
-//     display: flex;
-//     felx-direction: column;
-// `
 
 class RollScreen extends Component {
     constructor(props) {
@@ -170,7 +158,7 @@ class RollScreen extends Component {
         const homeButtonFixer = {
             position: 'fixed',
             bottom: '0',
-            left: '50%',
+            left: '90%',
             marginLeft: '-30.25px' //half the button's width
 
         }

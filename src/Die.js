@@ -4,6 +4,8 @@ import styled from 'styled-components';
 
 class Die extends Component {
 
+    handleClick = () => {this.props.onClick()}
+
     render() {
         const BORDER_WIDTH = 
         this.props.borderColor !== null ?
@@ -23,13 +25,13 @@ class Die extends Component {
 
         const onClick = 
             this.props.onClick !== null ?
-            this.props.onClick :
-            function(){};
+            this.handleClick :
+            null;
 
         const result = 
         <StyledDie 
             src={this.props.faceImageURL}
-            onClick={() => onClick()}
+            onClick={onClick}
         />;
 
         return(result);
