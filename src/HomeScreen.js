@@ -22,15 +22,12 @@ const CounterWrapper = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    // background-color: red;
-    // max-height: 650px;
 `
 
 const DiceCounter = styled.div`
     display: flex;
     flex-direction: column;
     align-items:center;
-    // background-color: teal;
     margin-right: 1px;
 
     width: 45vw;
@@ -53,7 +50,6 @@ const Home = styled.div`
 
     max-width: 1210px;
     min-width: 200px;
-    // background-color: pink;
 
     touch-action: none;
 
@@ -77,7 +73,7 @@ const QuickNumber = styled.strong`
 `
 
 const Title = styled.h1`
-    font-size: 10vw;
+    font-size: 12vw;
     @media (min-width: 1210px) {
         font-size: 120px;
     }

@@ -29,6 +29,7 @@ class Options extends Component {
                 onChange={this.handleDieResize}
                 step={1}
                 value={this.props.dieSideLengthPx}
+
             />;
 
         const homebutton = 
@@ -37,14 +38,14 @@ class Options extends Component {
             </Button>;
 
         const optionsAlignment = {
+            alignItems: 'center',
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center'
+            overflow: 'hidden'
         }
 
         const display = 
             <div style={optionsAlignment}>
-
                 Resize Dice:
                 <p/>
                 {dieResizingSlider}
@@ -55,8 +56,6 @@ class Options extends Component {
                     faceImageURL={this.props.sampleDieFace}
                     onClick={null}
                 />
-
-                
                 {homebutton}
             </div>;
 
