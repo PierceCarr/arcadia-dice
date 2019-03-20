@@ -3,4 +3,4 @@ A Progressive Web App that simulates the special dice, and their unique multiply
 Although it will run in any browser, it's best run on Android phones and tablets. As a PWA, you can install it on such devices and run it as an app. I host it on Heroku at [this link](https://arcadia-dice.herokuapp.com/). If downloading it through the chrome app, you'll want to use the 'three dot' menu to find the 'add to home screen' link. In firefox there should be a 'home screen' button beside the URL; tap that to install. The firefox version can sometimes experience a bit of a visual bug on the main app screen where the dice animation blinks, but the chrome version generally runs smooth and true 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-This project clearly has no affiliation with CMON (Cool Mini Or Not), Arcadia Quest's designers, or anyone commercially involved with the game.
+This is an unofficial project that has no affiliation with CMON (Cool Mini Or Not), Arcadia Quest's designers, or anyone commercially involved with the game.
